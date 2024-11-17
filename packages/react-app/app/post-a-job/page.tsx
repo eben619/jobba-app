@@ -1,162 +1,80 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
+import React, { useState } from "react";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import Footer from "@/components/Footer"; // Adjust path as needed
+import LoginModal from "@/web3auth/login-modal"; // Adjust path as needed
+import { IProvider } from "@web3auth/base";
+import Link from "@mui/material/Link";
 
-const PostAJobPage: React.FC = () => {
-  const [formData, setFormData] = useState({
-    jobTitle: '',
-    companyName: '',
-    location: '',
-    jobDescription: '',
-    salaryRange: '',
-    experienceRequired: '',
-    email: '',
-  });
+const App: React.FC = () => {
+  const [provider, setProvider] = useState<IProvider | null>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleLoginSuccess = (provider: IProvider) => {
+    console.log("Logged in with provider:", provider);
+    setProvider(provider);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Job Posted:', formData);
-    alert('Job successfully posted!');
+  const handleLogout = () => {
+    console.log("Logged out");
+    setProvider(null);
   };
 
   return (
-    <>
-      <Header />
-      <Box
-        sx={{
-          backgroundColor: 'gray.100',
-          minHeight: '80vh',
-          padding: '2rem',
-        }}
-      >
-        <Typography
-          variant="h4"
-          component="h1"
-          fontWeight="bold"
-          textAlign="center"
-          marginBottom="2rem"
-        >
-          Post a Job
-        </Typography>
+    <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+      {/* Header */}
+      <AppBar position="static" sx={{ backgroundColor: "grey.300" }}>
+        <Toolbar sx={{ justifyContent: "space-between" }}>
+          <Typography variant="h6" component="div" sx={{ fontWeight: "bold", color: "black" }}>
+            Jobba
+          </Typography>
+          <LoginModal onLoginSuccess={handleLoginSuccess} onLogout={handleLogout} />
+        </Toolbar>
+      </AppBar>
 
-        <Box
-          component="form"
-          onSubmit={handleSubmit}
-          sx={{
-            maxWidth: '600px',
-            margin: '0 auto',
-            backgroundColor: 'white',
-            padding: '2rem',
-            borderRadius: '16px', // Rounded corners
-            boxShadow: '0 4px 8px rgba(0, 123, 255, 0.2)', // Blue shadow
-          }}
-        >
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Job Title"
-                name="jobTitle"
-                value={formData.jobTitle}
-                onChange={handleChange}
-                required
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Company Name"
-                name="companyName"
-                value={formData.companyName}
-                onChange={handleChange}
-                required
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Location"
-                name="location"
-                value={formData.location}
-                onChange={handleChange}
-                required
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                multiline
-                rows={4}
-                label="Job Description"
-                name="jobDescription"
-                value={formData.jobDescription}
-                onChange={handleChange}
-                required
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Salary Range"
-                name="salaryRange"
-                value={formData.salaryRange}
-                onChange={handleChange}
-                placeholder="e.g., $50,000 - $70,000"
-                required
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Experience Required"
-                name="experienceRequired"
-                value={formData.experienceRequired}
-                onChange={handleChange}
-                placeholder="e.g., 2+ years"
-                required
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Contact Email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                type="email"
-                required
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                fullWidth
-                sx={{
-                  boxShadow: '0 4px 8px rgba(0, 123, 255, 0.4)', // Blue shadow for button
-                }}
-              >
-                Submit Job Posting
-              </Button>
-            </Grid>
-          </Grid>
+      {/* Main Content */}
+      <Box sx={{ flexGrow: 1, padding: "2rem", backgroundColor: "grey.100" }}>
+        {/* Intro Section */}
+        <Box textAlign="center" mb={4}>
+          <Typography variant="h4" fontWeight="bold" gutterBottom>
+            Welcome to Jobba
+          </Typography>
+          <Typography variant="body1">
+            Your one-stop platform for connecting talented professionals with exciting job opportunities.
+            Whether you're looking for your next career move or seeking to hire top talent, Jobba has got
+            you covered.
+          </Typography>
         </Box>
+
+        {provider ? (
+          <Box textAlign="center">
+            <Typography variant="h5" fontWeight="bold">
+              Connected to Celo Alfajores
+            </Typography>
+            <Typography variant="body1" mt={2}>
+              You are now connected to the Celo Alfajores Testnet!
+            </Typography>
+          </Box>
+        ) : (
+          <Box textAlign="center">
+            <Link href="https://img.lovepik.com/element/45012/2182.png_860.png" target="_blank" rel="noopener">
+              <img
+                src="https://img.lovepik.com/element/45012/2182.png_860.png"
+                alt="Jobba"
+                style={{ maxWidth: "300px", margin: "0 auto" }}
+              />
+            </Link>
+          </Box>
+        )}
       </Box>
+
+      {/* Footer */}
       <Footer />
-    </>
+    </Box>
   );
 };
 
-export default PostAJobPage;
+export default App;
