@@ -27,7 +27,6 @@ const PostAJobPage: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Job Posted:', formData);
-    // Add your submit logic here
     alert('Job successfully posted!');
   };
 
@@ -59,8 +58,8 @@ const PostAJobPage: React.FC = () => {
             margin: '0 auto',
             backgroundColor: 'white',
             padding: '2rem',
-            borderRadius: '8px',
-            boxShadow: 3,
+            borderRadius: '16px', // Rounded corners
+            boxShadow: '0 4px 8px rgba(0, 123, 255, 0.2)', // Blue shadow
           }}
         >
           <Grid container spacing={2}>
@@ -145,6 +144,9 @@ const PostAJobPage: React.FC = () => {
                 variant="contained"
                 color="primary"
                 fullWidth
+                sx={{
+                  boxShadow: '0 4px 8px rgba(0, 123, 255, 0.4)', // Blue shadow for button
+                }}
               >
                 Submit Job Posting
               </Button>
