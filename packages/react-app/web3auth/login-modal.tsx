@@ -10,7 +10,6 @@ import { Web3Auth, Web3AuthOptions } from "@web3auth/modal";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 
 interface LoginModalProps {
   onLoginSuccess: (provider: IProvider) => void;
@@ -63,8 +62,11 @@ const LoginModal: React.FC<LoginModalProps> = ({ onLoginSuccess, onLogout }) => 
             onLoginSuccess(provider);
           }
         }
-      } catch (error) {
-        console.error("Web3Auth initialization error:", error);
+      } catch (error: any) {
+        // Suppress the specific WalletInitializationError
+        if (error?.message !== "Wallet is not ready yet, Adapter is already initialized") {
+          console.error("Web3Auth initialization error:", error);
+        }
       }
     };
 
