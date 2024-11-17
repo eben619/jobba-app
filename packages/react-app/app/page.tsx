@@ -1,11 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
-import LoginModal from "@/web3auth/login-modal"; // Adjust path as needed
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 import Footer from "@/components/Footer"; // Adjust path as needed
+import LoginModal from "@/web3auth/login-modal"; // Adjust path as needed
 import { IProvider } from "@web3auth/base";
+import Link from "@mui/material/Link";
 
-const App = () => {
+const App: React.FC = () => {
   const [provider, setProvider] = useState<IProvider | null>(null);
 
   const handleLoginSuccess = (provider: IProvider) => {
@@ -19,34 +24,56 @@ const App = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
       {/* Header */}
-      <header className="relative bg-gray-100 py-4">
-        <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Jobba</h1>
+      <AppBar position="static" sx={{ backgroundColor: "grey.300" }}>
+        <Toolbar sx={{ justifyContent: "space-between" }}>
+          <Typography variant="h6" component="div" sx={{ fontWeight: "bold", color: "black" }}>
+            Jobba
+          </Typography>
           <LoginModal onLoginSuccess={handleLoginSuccess} onLogout={handleLogout} />
-        </div>
-      </header>
+        </Toolbar>
+      </AppBar>
 
       {/* Main Content */}
-      <main className="flex-grow container mx-auto py-8">
+      <Box sx={{ flexGrow: 1, padding: "2rem", backgroundColor: "grey.100" }}>
+        {/* Intro Section */}
+        <Box textAlign="center" mb={4}>
+          <Typography variant="h4" fontWeight="bold" gutterBottom>
+            Welcome to Jobba
+          </Typography>
+          <Typography variant="body1">
+            Your one-stop platform for connecting talented professionals with exciting job opportunities.
+            Whether you're looking for your next career move or seeking to hire top talent, Jobba has got
+            you covered.
+          </Typography>
+        </Box>
+
         {provider ? (
-          <div>
-            <h2 className="text-xl font-bold">Connected to Celo Alfajores</h2>
-            <p>You are now connected to the Celo Alfajores Testnet!</p>
-            {/* Additional provider-related actions can be added here */}
-          </div>
+          <Box textAlign="center">
+            <Typography variant="h5" fontWeight="bold">
+              Connected to Celo Alfajores
+            </Typography>
+            <Typography variant="body1" mt={2}>
+              You are now connected to the Celo Alfajores Testnet!
+            </Typography>
+          </Box>
         ) : (
-          <div>
-            <h2 className="text-xl font-bold">No Provider Connected</h2>
-            <p>Please log in to connect to the blockchain provider.</p>
-          </div>
+          <Box textAlign="center">
+            <Link href="https://img.lovepik.com/element/45012/2182.png_860.png" target="_blank" rel="noopener">
+              <img
+                src="https://img.lovepik.com/element/45012/2182.png_860.png"
+                alt="Jobba"
+                style={{ maxWidth: "300px", margin: "0 auto" }}
+              />
+            </Link>
+          </Box>
         )}
-      </main>
+      </Box>
 
       {/* Footer */}
       <Footer />
-    </div>
+    </Box>
   );
 };
 
